@@ -57,7 +57,7 @@ resource "aws_db_instance" "this" {
   storage_encrypted = "${var.storage_encrypted}"
   kms_key_id        = "${var.kms_key_id}"
 
-  vpc_security_group_ids = ["${var.vpc_security_group_ids}"]
+  vpc_security_group_ids = ["${concat(var.vpc_security_group_ids,list(var.bastion_security_group_id))}"]
   multi_az               = "${local.multi_az}"
   publicly_accessible    = false
 

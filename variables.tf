@@ -81,6 +81,11 @@ variable "vpc_security_group_ids" {
   description = "List of VPC security groups to associate"
 }
 
+variable "bastion_security_group_id" {
+  type        = "string"
+  description = "bastion security groups to associate"
+}
+
 variable "db_subnet_group_name" {
   type        = "string"
   description = "Name of DB subnet group"
