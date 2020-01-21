@@ -1,3 +1,21 @@
+## v0.6.1
+
+ENHANCEMENTS:
+
+* Add support for rds ca_cert_identifier attribute
+
+WARNING:
+Please verify the value of apply_immediately variable, before update the version of terraform module in existed infrastructure.
+* With apply_immediately set to true, the instance **will restart immediately** and the new certificate will be used by the instance.
+* With apply_immediately parameter set to false. The instance **will restart on the next maintenance window**. Terraform will still show changes needed for this parameter between ca_cert_identifier changed to rds-ca-2019 until the instance restart on the maintenance window.
+
+## v0.6.0
+
+FEATURES:
+
+* Performance insights are now available to configure
+* The default value for performance insights is false
+
 ## v0.5.0 (Feb 4, 2019)
 
 FEATURES:
