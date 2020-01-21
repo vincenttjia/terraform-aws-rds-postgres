@@ -1,4 +1,4 @@
-## v0.6.1
+## v0.6.1 (Jan 21, 2020)
 
 ENHANCEMENTS:
 
@@ -9,7 +9,7 @@ Please verify the value of apply_immediately variable, before update the version
 * With apply_immediately set to true, the instance **will restart immediately** and the new certificate will be used by the instance.
 * With apply_immediately parameter set to false. The instance **will restart on the next maintenance window**. Terraform will still show changes needed for this parameter between ca_cert_identifier changed to rds-ca-2019 until the instance restart on the maintenance window.
 
-## v0.6.0
+## v0.6.0 (Jan 25, 2020)
 
 FEATURES:
 
