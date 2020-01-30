@@ -4,6 +4,9 @@ ENHANCEMENTS:
 
 * Added a variable to control deletion protection for the rds instance. The default value is `false`.
 
+NOTES:
+* The default value of `deletion_protection` argument is false. The `deletion_protection` variable default value also set to `false`. Updating to this version without setting `deletion_protetion` argument to true should not trigger changes.
+
 ## v0.6.1 (Jan 21, 2020)
 
 ENHANCEMENTS:
