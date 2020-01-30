@@ -1,3 +1,9 @@
+## v0.6.2 (Jan 30, 2020)
+
+ENHANCEMENTS:
+
+* Added a variable to control deletion protection for the rds instance. The default value is `false`.
+
 ## v0.6.1 (Jan 21, 2020)
 
 ENHANCEMENTS:
