@@ -4,7 +4,7 @@ locals {
   db_identifier_max_length = 63
   db_identifier_prefix     = "${var.service_name}-postgres-"
 
-  db_identifier_suffix_max_byte_length = local.db_identifier_max_length - length(local.db_identifier_prefix) / 2
+  db_identifier_suffix_max_byte_length = floor((local.db_identifier_max_length - length(local.db_identifier_prefix)) / 2)
   db_identifier_suffix_byte_length = min(
     local.max_byte_length,
     local.db_identifier_suffix_max_byte_length,
