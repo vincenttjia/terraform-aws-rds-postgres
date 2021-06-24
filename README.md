@@ -155,6 +155,7 @@ No requirements.
 | db\_subnet\_group\_name | Name of DB subnet group | `string` | `""` | no |
 | deletion\_protection | If the DB instance should have deletion protection enabled. The database can't be deleted when this value is set to true. The default is false | `string` | `false` | no |
 | description | The description of this RDS instance | `string` | n/a | yes |
+| enabled\_cloudwatch\_logs\_exports | List of log types to enable for exporting to CloudWatch logs | `list` | `[]` | no |
 | engine\_version | The postgres engine version | `string` | `""` | no |
 | environment | The environment this RDS belongs to | `string` | n/a | yes |
 | instance\_class | The instance type of the RDS instance | `string` | n/a | yes |
@@ -177,7 +178,6 @@ No requirements.
 | storage\_type | One of standard (magnetic), gp2 (general purpose SSD), or io1 (provisioned IOPS SSD) | `string` | `"gp2"` | no |
 | username | Username for the master DB user | `string` | `"postgres"` | no |
 | vpc\_security\_group\_ids | List of VPC security groups to associate | `list` | n/a | yes |
-| enabled\_cloudwatch\_logs\_exports | List of log types to enable for exporting to CloudWatch logs | `list` | `[]` | no |
 
 ## Outputs
 
