@@ -12,7 +12,7 @@ data "aws_vpc" "test_vpc" {
 
 # Existing IAM Policy for RDS Enhanced Monitoring
 data "aws_iam_policy" "rds_enhanced_monitoring" {
-  arn = "arn:aws:iam::460124681500:policy/VincentAmazonRDSEnhancedMonitoringRole"
+  arn = "arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole"
 }
 
 module "rds_enhanced_monitoring" {
