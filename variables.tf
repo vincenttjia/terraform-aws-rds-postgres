@@ -141,7 +141,7 @@ variable "maintenance_window" {
 variable "backup_retention_period" {
   type        = string
   description = "The days to retain backups for"
-  default     = 7
+  default     = 0
 }
 
 variable "backup_window" {
