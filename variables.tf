@@ -208,3 +208,9 @@ variable "enabled_cloudwatch_logs_exports" {
   default     = []
   description = "List of log types to enable for exporting to CloudWatch logs"
 }
+
+variable "aws_backup_frequency" {
+  type = string
+  default = "Daily"
+  description = "Backup frequency handled by AWS Backup Policy"
+}

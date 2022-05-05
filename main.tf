@@ -28,6 +28,7 @@ locals {
     Environment   = var.environment
     Description   = var.description
     ManagedBy     = "terraform"
+    OrgAWSBackup  = var.aws_backup_frequency
   }
 }
 
