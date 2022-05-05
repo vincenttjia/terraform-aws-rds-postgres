@@ -2,20 +2,21 @@ provider "aws" {
   region = "ap-southeast-1"
 }
 
-# Create an IAM Role for RDS Enhanced Monitoring
+# Existing VPC with a DB Subnet Group
 data "aws_vpc" "test_vpc" {
   filter {
     name   = "tag:ProductDomain"
-    values = ["tsi"]
+    values = ["test"]
   }
 }
 
+# Existing IAM Policy for RDS Enhanced Monitoring
 data "aws_iam_policy" "rds_enhanced_monitoring" {
   arn = "arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole"
 }
 
 module "rds_enhanced_monitoring" {
-  source = "git@github.com:traveloka/terraform-aws-iam-role.git//modules/service?ref=v2.0.2"
+  source = "git@github.com:traveloka/terraform-aws-iam-role.git//modules/service?ref=v3.0.0"
 
   role_identifier  = "RDS Enhanced Monitoring"
   role_description = "Provides access to Cloudwatch for RDS Enhanced Monitoring"
@@ -24,6 +25,10 @@ module "rds_enhanced_monitoring" {
   environment      = "testing"
 }
 
+resource "aws_iam_role_policy_attachment" "rds_enhanced_monitoring" {
+  role       = module.rds_enhanced_monitoring.role_name
+  policy_arn = data.aws_iam_policy.rds_enhanced_monitoring.arn
+}
 
 
 module "txtbook_postgres" {
@@ -45,7 +50,7 @@ module "txtbook_postgres" {
 
   bastion_security_group_id = aws_security_group.bastion_sg.id
 
-  # Change to valid db subnet group nam
+  # Change to valid db subnet group name
   db_subnet_group_name = "tvlk-dev-rds-subnet-group"
 
   # Change to valid parameter group name
@@ -55,7 +60,7 @@ module "txtbook_postgres" {
   backup_window      = "21:00-23:00"
 
   # Change to valid monitoring role arn
-  monitoring_role_arn = "arn:aws:iam::460124681500:role/service-role/monitoring.rds.amazonaws.com/ServiceRoleForMonitoring_rds-enhanced-monitoring-af5e65a9bb3a52"
+  monitoring_role_arn = module.rds_enhanced_monitoring.role_arn
   ca_cert_identifier  = "rds-ca-2019"
 }
 
@@ -86,4 +91,3 @@ resource "aws_security_group" "bastion_sg" {
     description   = "dummy bastion security group for testing postgres modules"
   }
 }
-

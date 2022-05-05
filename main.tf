@@ -13,7 +13,7 @@ locals {
   final_snapshot_identifier = "${random_id.db_identifier.hex}-final-snapshot"
 
   # Change default values for read replica instance
-  is_read_replica         = var.replicate_source_db == "" ? false : true
+  is_read_replica         = var.replicate_source_db == null ? false : true
   username                = local.is_read_replica ? "" : var.username
   password                = local.is_read_replica ? "" : var.snapshot_identifier == "" ? random_id.password.hex : ""
   multi_az                = var.multi_az

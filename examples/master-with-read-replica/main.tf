@@ -2,12 +2,34 @@ provider "aws" {
   region = "ap-southeast-1"
 }
 
+# Existing VPC with a DB Subnet Group
 data "aws_vpc" "test_vpc" {
   filter {
     name   = "tag:ProductDomain"
-    values = ["tsi"]
+    values = ["test"]
   }
 }
+
+# Existing IAM Policy for RDS Enhanced Monitoring
+data "aws_iam_policy" "rds_enhanced_monitoring" {
+  arn = "arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole"
+}
+
+module "rds_enhanced_monitoring" {
+  source = "git@github.com:traveloka/terraform-aws-iam-role.git//modules/service?ref=v3.0.0"
+
+  role_identifier  = "RDS Enhanced Monitoring"
+  role_description = "Provides access to Cloudwatch for RDS Enhanced Monitoring"
+  aws_service      = "monitoring.rds.amazonaws.com"
+  product_domain   = "tsi"
+  environment      = "testing"
+}
+
+resource "aws_iam_role_policy_attachment" "rds_enhanced_monitoring" {
+  role       = module.rds_enhanced_monitoring.role_name
+  policy_arn = data.aws_iam_policy.rds_enhanced_monitoring.arn
+}
+
 
 module "txtbook_postgres_1" {
   source = "../../"
@@ -23,7 +45,6 @@ module "txtbook_postgres_1" {
   engine_version    = "9.6.6"
   allocated_storage = 20
 
-  # Change to valid security group id
   # Change to valid security group id
   vpc_security_group_ids = [
     aws_security_group.dummy_sg.id
@@ -41,7 +62,7 @@ module "txtbook_postgres_1" {
   backup_retention_period = 1
 
   # Change to valid monitoring role arn
-  monitoring_role_arn = "arn:aws:iam::517530806209:role/rds-monitoring-role"
+  monitoring_role_arn = module.rds_enhanced_monitoring.role_arn
 }
 
 module "txtbook_postgres_2" {
@@ -76,7 +97,7 @@ module "txtbook_postgres_2" {
   maintenance_window = "Mon:21:00-Mon:23:00"
 
   # Change to valid monitoring role arn
-  monitoring_role_arn = "arn:aws:iam::517530806209:role/rds-monitoring-role"
+  monitoring_role_arn = module.rds_enhanced_monitoring.role_arn
 }
 
 resource "aws_security_group" "dummy_sg" {

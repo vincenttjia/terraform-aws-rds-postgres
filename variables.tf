@@ -21,7 +21,7 @@ variable "description" {
 variable "replicate_source_db" {
   type        = string
   description = "The source db of read replica instance"
-  default     = ""
+  default     = null
 }
 
 variable "engine_version" {
