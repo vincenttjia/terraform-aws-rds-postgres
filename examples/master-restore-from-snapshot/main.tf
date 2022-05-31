@@ -16,7 +16,7 @@ data "aws_iam_policy" "rds_enhanced_monitoring" {
 }
 
 module "rds_enhanced_monitoring" {
-  source = "git@github.com:traveloka/terraform-aws-iam-role.git//modules/service?ref=v3.0.0"
+  source = "git@github.com:traveloka/terraform-aws-iam-role.git//modules/service?ref=v4.0.1"
 
   role_identifier  = "RDS Enhanced Monitoring"
   role_description = "Provides access to Cloudwatch for RDS Enhanced Monitoring"
