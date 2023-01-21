@@ -165,7 +165,7 @@ variable "copy_tags_to_snapshot" {
 variable "snapshot_identifier" {
   type        = string
   description = "The snapshot ID used to restore the DB instance"
-  default     = ""
+  default     = null
 }
 
 variable "monitoring_interval" {
@@ -207,4 +207,34 @@ variable "enabled_cloudwatch_logs_exports" {
   type        = list(string)
   default     = []
   description = "List of log types to enable for exporting to CloudWatch logs"
+}
+
+variable "pitr_source_db_instance_identifier" {
+  type        = string
+  description = "The source database instance identifier to restore from"
+  default     = null
+}
+
+variable "pitr_source_db_instance_automated_backups_arn" {
+  type        = string
+  description = "The ARN of the source database instance automated backups to restore from"
+  default     = null
+}
+
+variable "pitr_source_dbi_resource_id" {
+  type        = string
+  description = "The resource ID of the source database instance automated backups to restore from"
+  default     = null
+}
+
+variable "pitr_use_latest_restorable_time" {
+  type        = string
+  description = "Specifies whether or not to restore the DB instance to the latest restorable backup time"
+  default     = null
+}
+
+variable "pitr_restore_time" {
+  type        = string
+  description = "The date and time to restore from"
+  default     = null
 }

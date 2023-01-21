@@ -12,10 +12,23 @@ locals {
 
   final_snapshot_identifier = "${random_id.db_identifier.hex}-final-snapshot"
 
+  # PITR
+  pitr_restore = var.pitr_source_db_instance_identifier != null || var.pitr_source_db_instance_automated_backups_arn != null || var.pitr_source_dbi_resource_id != null ? true : false
+  pitr_details = local.pitr_restore ? [
+    {
+      source_db_instance_identifier            = var.pitr_source_db_instance_identifier
+      source_db_instance_automated_backups_arn = var.pitr_source_db_instance_automated_backups_arn
+      source_dbi_resource_id                   = var.pitr_source_dbi_resource_id
+      restore_time                             = var.pitr_restore_time
+      use_latest_restorable_time               = var.pitr_use_latest_restorable_time
+    }
+  ] : [{}]
+
+
   # Change default values for read replica instance
   is_read_replica         = var.replicate_source_db == null ? false : true
   username                = local.is_read_replica ? "" : var.username
-  password                = local.is_read_replica ? "" : var.snapshot_identifier == "" ? random_id.password.hex : ""
+  password                = local.is_read_replica ? "" : var.snapshot_identifier == "" ? local.pitr_restore ? "" : random_id.password.hex : ""
   multi_az                = var.multi_az
   backup_retention_period = local.is_read_replica ? 0 : var.backup_retention_period
   skip_final_snapshot     = local.is_read_replica ? true : var.skip_final_snapshot
@@ -102,6 +115,17 @@ resource "aws_db_instance" "this" {
   performance_insights_enabled = var.performance_insights_enabled
 
   enabled_cloudwatch_logs_exports = var.enabled_cloudwatch_logs_exports
+
+  dynamic "restore_to_point_in_time" {
+    for_each = local.pitr_details
+    content {
+      restore_time                             = restore_to_point_in_time.value.restore_time
+      source_db_instance_identifier            = restore_to_point_in_time.value.source_db_instance_identifier
+      source_db_instance_automated_backups_arn = restore_to_point_in_time.value.source_db_instance_automated_backups_arn
+      source_dbi_resource_id                   = restore_to_point_in_time.value.source_dbi_resource_id
+      use_latest_restorable_time               = restore_to_point_in_time.value.use_latest_restorable_time
+    }
+  }
 
   tags = merge(var.additional_tags, local.default_tags)
 }
