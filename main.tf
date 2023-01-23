@@ -22,7 +22,7 @@ locals {
       restore_time                             = var.pitr_restore_time
       use_latest_restorable_time               = var.pitr_use_latest_restorable_time
     }
-  ] : [{}]
+  ] : []
 
 
   # Change default values for read replica instance
